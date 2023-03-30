@@ -1,16 +1,28 @@
-import React from 'react';
 import WeatherData from './components/weatherData';
+import WeatherStats from './components/weatherStats';
+import {useState} from 'react';
 
-class App extends React.Component {
+import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
 
 
-render() {
+export default function WebApp(){
+
 	return(
-    <>
-	<WeatherData/>
-  </>
+		<Router>
+           <div >
+            <ul >
+              <li>
+                <Link to="/weather">Raw data</Link>
+              </li>
+              <li>
+                <Link to="/statistics">Weather Statistics</Link>
+              </li>
+            </ul>
+           <Routes>
+                 <Route exact path='/weather' element={< WeatherData />}></Route>
+                 <Route exact path='/statistics' element={<WeatherStats />}></Route>
+          </Routes>
+          </div>
+       </Router>
 	);
 }
-}
-
-export default App;

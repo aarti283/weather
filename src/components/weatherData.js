@@ -12,7 +12,7 @@ class WeatherData extends React.Component {
 
 		let data ;
 
-		axios.get('http://localhost:8000/weather')
+		axios.get('http://localhost:8000/api/weather')
 		.then(res => {
 			data = res.data;
 			this.setState({
@@ -25,9 +25,8 @@ class WeatherData extends React.Component {
 render() {
 	return(
     <>
+	<h1>Weather data</h1>
 	<div>
-			{this.state.details.map((detail, id) => (
-			<div key={id}>
 			<div >
 				<div >
         <Table striped bordered hover>
@@ -36,25 +35,27 @@ render() {
           <th>Date</th>
           <th>minimum temperature</th>
           <th>maximum temperature</th>
-          <th>amount of precipitatione</th>
+          <th>amount of precipitation</th>
+		  <th>state code</th>
         </tr>
       </thead>
         <tbody>
-        <tr className="post-card" key={detail.date}>
+		{this.state.details.map((detail, id) => (
+
+        <tr className="post-card" key={detail.id}>
           <td>{detail.date}</td>
-          <td>{detail.max}</td>
-          <td>{detail.min}</td>
-          <td>{detail.amount}</td>
+          <td>{detail.maximum_temp}</td>
+          <td>{detail.minimum_temp}</td>
+          <td>{detail.precipitation}</td>
+		  <td>{detail.state_code}</td>
         </tr>
-        </tbody>
-        </Table>
-				</div>
-			</div>
-			</div>
 			)
 		)}
+		</tbody>
+        </Table>
 	</div>
-
+	</div>
+	</div>
   </>
 	);
 }
