@@ -1,6 +1,7 @@
 import WeatherData from './components/weatherData';
 import WeatherStats from './components/weatherStats';
 import {useState} from 'react';
+import Paginate_weatherData from './components/weatherData';
 
 import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
 
@@ -48,7 +49,7 @@ export default function WebApp(){
               </li>
             </ul>
            <Routes>
-                 <Route exact path='/weather' element={< WeatherData stateCode={stateCode} date={date}/>}></Route>
+                 <Route exact path='/weather' element={<Paginate_weatherData stateCode={stateCode} date={date}/>}></Route>
                  <Route exact path='/statistics' element={<WeatherStats stateCode={stateCode} date={date}/>}></Route>
           </Routes>
           </div>

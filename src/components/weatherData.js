@@ -1,9 +1,43 @@
-
-import React from 'react';
+import React, { Component } from "react";
+import ReactPaginate from 'react-paginate'
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 
-class WeatherData extends React.Component {
+
+
+
+class WeatherData extends Component {
+	render() {
+	  const { currentItems } = this.props;
+	  return (
+		<>
+		  <Table striped bordered hover>
+			<thead>
+			  <tr>
+				<th>Date</th>
+				<th>maximum temperature</th>
+				<th>minimum temperature</th>
+				<th>amount of precipitatione</th>
+			  </tr>
+			</thead>
+			{currentItems.map((detail, id) => (
+			  <tbody key={id}>
+				<tr className="post-card" key={detail.date}>
+				  <td>{detail.date}</td>
+				  <td>{detail.maximum_temp}</td>
+				  <td>{detail.minimum_temp}</td>
+				  <td>{detail.precipitation}</td>
+				  <td>{detail.status_code}</td>
+				</tr>
+			  </tbody>
+			))}
+		  </Table>
+		</>
+	  );
+	}
+  }
+
+class Paginate_weatherData extends React.Component {
 	state = {
 		details : [],
 	}
@@ -47,61 +81,40 @@ class WeatherData extends React.Component {
 		}
 	  }
 
-render() {
-	let result;
 
-	const {details} = this.state
+  handlePageClick(event) {
+    const newOffset = (event.selected * this.props.itemsPerPage) % this.state.details.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    this.setState({ itemOffset: newOffset });
+  }
 
-	if (!Array.isArray(details)){
-		result = (
-		  <tr className='post-card'>
-				<td>{details.date}</td>
-				<td>{details.maximum_temp}</td>
-				<td>{details.minimum_temp}</td>
-				<td>{details.precipitation}</td>
-				<td>{details.state_code}</td>
-			</tr>
-		);
-	  }
-	else{
-		result = details.map((detail, id) => (
-			<tr className="post-card" key={detail.id}>
-			  <td>{detail.date}</td>
-			  <td>{detail.maximum_temp}</td>
-			  <td>{detail.minimum_temp}</td>
-			  <td>{detail.precipitation}</td>
-			  <td>{detail.state_code}</td>
-			</tr>
-				)
-			);
-	}
 
-	return(
-    <>
-	
-	<div>
-			<div >
-				<div >
-        <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>minimum temperature</th>
-          <th>maximum temperature</th>
-          <th>amount of precipitation</th>
-		  <th>state code</th>
-        </tr>
-      </thead>
-        <tbody>
-		{result}
-		</tbody>
-        </Table>
-	</div>
-	</div>
-	</div>
-  </>
-	);
-}
+
+  render() {
+    const { itemsPerPage } = this.props;
+    const { itemOffset, details } = this.state;
+    const endOffset = itemOffset + itemsPerPage;
+    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    const currentItems = details.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(details.length / itemsPerPage);
+
+    return (
+      <>
+        <WeatherData currentItems={currentItems} />
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={this.handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+        />
+      </>
+    );
+  }
 }
 
-export default WeatherData;
+export default Paginate_weatherData;
