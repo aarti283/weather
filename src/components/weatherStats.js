@@ -6,6 +6,7 @@ import Table from 'react-bootstrap/Table';
 class WeatherStats extends Component {
   // constructor(props){
   //   super(props);
+  //integrated to gitlab
   // }
 
   state = {
